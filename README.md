@@ -1,18 +1,31 @@
-# trading_app
+# Trading App
 
-A new Flutter project.
+A Flutter-based trading application developed as part of the Trading App Flutter Assignment.
+
+## Features
+
+- Watchlist
+- Live Prices Mimic
+- Buy/Sell Ticket
+- Holdings
+
+## Tech Stack
+
+- Flutter
+- Dart
+- BLoC
+- Clean Architecture
+
+## Requirements
+
+- Flutter 3.47.1
+- Dart 3.13.1
+- Android SDK
+- VS Code
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Install dependencies
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), whi\ch offers tutorials,
-samples, guidance on mobile development, and a full API re\ference.\\\\\\
-\\\\\\\
+```bash
+flutter pub get
