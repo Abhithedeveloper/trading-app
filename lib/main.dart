@@ -1,37 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_app/features/market_data/data/data_source/mock_market_data_source.dart';
+import 'package:trading_app/features/market_data/data/repository/market_data_repository_impl.dart';
+import 'package:trading_app/features/market_data/domain/usecase/get_market_data.dart';
+import 'package:trading_app/features/market_data/presentation/bloc/market_data_bloc.dart';
+import 'package:trading_app/features/market_data/presentation/pages/market_data_page.dart';
 
+// void main() {
+//    final dataSource = MockMarketDataDataSource();
+
+//   dataSource.marketDataStream.listen((data) {
+//     debugPrint(
+//       '${data.symbol} | '
+//       'LTP: ${data.ltp.toStringAsFixed(2)} | '
+//       'Change: ${data.change.toStringAsFixed(2)} | '
+//       'Change %: ${data.changePercent.toStringAsFixed(2)}%',
+//     );
+//   });
+
+//   dataSource.start();
+//   runApp(const MyApp());
+// }
 void main() {
-  runApp(const MyApp());
+  final dataSource = MockMarketDataDataSource();
+
+  final repository = MarketDataRepositoryImpl(
+    dataSource: dataSource,
+  );
+
+  final useCase = WatchMarketDataUseCase(
+    repository: repository,
+  );
+
+  runApp(
+    MyApp(
+      useCase: useCase,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+   const MyApp({super.key,  required this.useCase});
+final WatchMarketDataUseCase useCase;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+      debugShowCheckedModeBanner: false,
+      home: BlocProvider(
+        create: (_) => MarketDataBloc(
+          watchMarketDataUseCase: useCase,
+        )..add(
+            const MarketDataEvent.started(),
+          ),
+        child: const MarketDataPage(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
+    
+    // MaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     // This is the theme of your application.
+    //     //
+    //     // TRY THIS: Try running your application with "flutter run". You'll see
+    //     // the application has a purple toolbar. Then, without quitting the app,
+    //     // try changing the seedColor in the colorScheme below to Colors.green
+    //     // and then invoke "hot reload" (save your changes or press the "hot
+    //     // reload" button in a Flutter-supported IDE, or press "r" if you used
+    //     // the command line to start the app).
+    //     //
+    //     // Notice that the counter didn't reset back to zero; the application
+    //     // state is not lost during the reload. To reset the state, use hot
+    //     // restart instead.
+    //     //
+    //     // This works for code too, not just values: Most code changes can be
+    //     // tested with just a hot reload.
+    //     colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    //   ),
+    //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    // );
   }
 }
 
