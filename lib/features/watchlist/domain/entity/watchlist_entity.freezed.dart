@@ -208,7 +208,7 @@ return $default(_that.id,_that.name,_that.symbols);case _:
 
 
 class _WatchlistEntity implements WatchlistEntity {
-  const _WatchlistEntity({required this.id, required this.name, required final  List<String> symbols}): _symbols = symbols;
+  const _WatchlistEntity({required this.id, required this.name, required   List<String> symbols}): _symbols = symbols;
   
 
 @override final  String id;
