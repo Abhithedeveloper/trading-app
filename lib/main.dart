@@ -53,7 +53,7 @@ final WatchMarketDataUseCase useCase;
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:const WatchlistPage()
+      home:const MarketDataPage()
       //  BlocProvider(
       //   create: (_) => MarketDataBloc(
       //     watchMarketDataUseCase: useCase,
