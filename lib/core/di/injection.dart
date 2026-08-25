@@ -5,6 +5,13 @@ import 'package:trading_app/features/market_data/data/repository/market_data_rep
 import 'package:trading_app/features/market_data/domain/repository/market_data_repository.dart';
 import 'package:trading_app/features/market_data/domain/usecase/get_market_data.dart';
 import 'package:trading_app/features/market_data/presentation/bloc/market_data_bloc.dart';
+import 'package:trading_app/features/trading/data/datasource/trading_local_datasource.dart';
+import 'package:trading_app/features/trading/data/repository/trading_localDataSource_Imp.dart';
+import 'package:trading_app/features/trading/domain/repository/trading_repository.dart';
+import 'package:trading_app/features/trading/domain/usecase/buy_stock.dart';
+import 'package:trading_app/features/trading/domain/usecase/get_holdings.dart';
+import 'package:trading_app/features/trading/domain/usecase/sell_stock.dart';
+import 'package:trading_app/features/trading/presentation/bloc/trading_bloc.dart';
 
 import '../../features/watchlist/data/datasource/watchlist_local_datasource.dart';
 import '../../features/watchlist/data/repository/watchlist_repository_impl.dart';
@@ -134,6 +141,52 @@ getIt.registerLazySingleton<LocalStorage>(
       removeStockFromWatchlist:
           getIt<RemoveStockFromWatchlist>(),
       reorderWatchlist: getIt<ReorderWatchlist>(),
+    ),
+  );
+// ============================================================
+  // Trading
+  // ============================================================
+
+  // Local DataSource
+  getIt.registerLazySingleton<TradingLocalDataSource>(
+    () => TradingLocalDataSourceImpl(
+      localStorage: getIt<LocalStorage>(),
+    ),
+  );
+
+  // Repository
+  getIt.registerLazySingleton<TradingRepository>(
+    () => TradingRepositoryImpl(
+      localDataSource:
+          getIt<TradingLocalDataSource>(),
+    ),
+  );
+
+  // UseCases
+  getIt.registerLazySingleton<BuyStock>(
+    () => BuyStock(
+      repository: getIt<TradingRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<SellStock>(
+    () => SellStock(
+      repository: getIt<TradingRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetHoldings>(
+    () => GetHoldings(
+      repository: getIt<TradingRepository>(),
+    ),
+  );
+
+  // BLoC
+  getIt.registerFactory<TradingBloc>(
+    () => TradingBloc(
+      buyStock: getIt<BuyStock>(),
+      sellStock: getIt<SellStock>(),
+      getHoldings: getIt<GetHoldings>(),
     ),
   );
 }

@@ -1,6 +1,18 @@
 part of 'trading_bloc.dart';
 
+
+
 @freezed
-class TradingState with _$TradingState {
-  const factory TradingState.initial() = _Initial;
+sealed class TradingState with _$TradingState {
+  const factory TradingState.initial() = Initial;
+
+  const factory TradingState.loading() = Loading;
+
+  const factory TradingState.loaded({
+    required List<HoldingEntity> holdings,
+  }) = Loaded;
+
+  const factory TradingState.error({
+    required String message,
+  }) = Error;
 }
