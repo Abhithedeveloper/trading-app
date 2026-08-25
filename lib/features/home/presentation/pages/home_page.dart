@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_app/features/trading/presentation/pages/trading_page.dart';
 import 'package:trading_app/features/watchlist/presentation/page/watchlist_page.dart';
 
 import '../../../market_data/presentation/pages/market_data_page.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = const [
     MarketDataPage(),
     WatchlistPage(),
+    TradingPage(),
   ];
 
   void _onDestinationSelected(int index) {
@@ -50,6 +52,11 @@ class _HomePageState extends State<HomePage> {
             selectedIcon: Icon(Icons.star),
             label: 'Watchlist',
           ),
+          NavigationDestination(
+  icon: Icon(Icons.swap_horiz_outlined),
+  selectedIcon: Icon(Icons.swap_horiz),
+  label: 'Trading',
+),
         ],
       ),
     );

@@ -47,12 +47,18 @@ final class TradingBloc
         price: event.price,
       );
 
-      await _loadHoldings(emit);
-    } catch (error) {
+      final holdings = await _getHoldings();
+
       emit(
-        TradingState.error(
-          message: error.toString(),
+        TradingState.loaded(
+          holdings: holdings,
+          message: '${event.symbol} bought successfully',
         ),
+      );
+    } catch (error) {
+      await _emitTransactionError(
+        error,
+        emit,
       );
     }
   }
@@ -68,13 +74,38 @@ final class TradingBloc
         price: event.price,
       );
 
-      await _loadHoldings(emit);
-    } catch (error) {
+      final holdings = await _getHoldings();
+
       emit(
-        TradingState.error(
-          message: error.toString(),
+        TradingState.loaded(
+          holdings: holdings,
+          message: '${event.symbol} sold successfully',
         ),
       );
+    } catch (error) {
+      await _emitTransactionError(
+        error,
+        emit,
+      );
+    }
+  }
+
+  Future<void> _emitTransactionError(
+    Object error,
+    Emitter<TradingState> emit,
+  ) async {
+    try {
+      final holdings = await _getHoldings();
+
+      emit(
+        TradingState.loaded(
+          holdings: holdings,
+          message: _cleanErrorMessage(error),
+        ),
+      );
+    } catch (_) {
+      // If holdings cannot be loaded, keep the existing
+      // UI state instead of replacing it with an error screen.
     }
   }
 
@@ -94,9 +125,19 @@ final class TradingBloc
     } catch (error) {
       emit(
         TradingState.error(
-          message: error.toString(),
+          message: _cleanErrorMessage(error),
         ),
       );
     }
+  }
+
+  String _cleanErrorMessage(Object error) {
+    final message = error.toString();
+
+    if (message.startsWith('Exception: ')) {
+      return message.substring('Exception: '.length);
+    }
+
+    return message;
   }
 }

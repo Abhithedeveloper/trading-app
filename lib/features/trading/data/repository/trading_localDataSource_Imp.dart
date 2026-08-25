@@ -20,6 +20,12 @@ final class TradingRepositoryImpl implements TradingRepository {
     required int quantity,
     required double price,
   }) async {
+    _validateTrade(
+      symbol: symbol,
+      quantity: quantity,
+      price: price,
+    );
+
     final holdings = await _localDataSource.getHoldings();
 
     final index = holdings.indexWhere(
@@ -37,13 +43,15 @@ final class TradingRepositoryImpl implements TradingRepository {
     } else {
       final existing = holdings[index];
 
-      final totalQuantity = existing.quantity + quantity;
+      final totalQuantity =
+          existing.quantity + quantity;
 
       final totalValue =
           (existing.quantity * existing.averagePrice) +
           (quantity * price);
 
-      final averagePrice = totalValue / totalQuantity;
+      final averagePrice =
+          totalValue / totalQuantity;
 
       holdings[index] = existing.copyWith(
         quantity: totalQuantity,
@@ -60,6 +68,12 @@ final class TradingRepositoryImpl implements TradingRepository {
     required int quantity,
     required double price,
   }) async {
+    _validateTrade(
+      symbol: symbol,
+      quantity: quantity,
+      price: price,
+    );
+
     final holdings = await _localDataSource.getHoldings();
 
     final index = holdings.indexWhere(
@@ -67,14 +81,17 @@ final class TradingRepositoryImpl implements TradingRepository {
     );
 
     if (index == -1) {
-      throw Exception('No holdings found for $symbol');
+      throw Exception(
+        'No holdings found for $symbol',
+      );
     }
 
     final existing = holdings[index];
 
     if (quantity > existing.quantity) {
       throw Exception(
-        'Cannot sell more than available quantity',
+        'Cannot sell more than available quantity. '
+        'Available: ${existing.quantity}',
       );
     }
 
@@ -90,5 +107,27 @@ final class TradingRepositoryImpl implements TradingRepository {
     }
 
     await _localDataSource.saveHoldings(holdings);
+  }
+
+  void _validateTrade({
+    required String symbol,
+    required int quantity,
+    required double price,
+  }) {
+    if (symbol.trim().isEmpty) {
+      throw Exception('Stock symbol is required');
+    }
+
+    if (quantity <= 0) {
+      throw Exception(
+        'Quantity must be greater than zero',
+      );
+    }
+
+    if (price <= 0) {
+      throw Exception(
+        'Price must be greater than zero',
+      );
+    }
   }
 }

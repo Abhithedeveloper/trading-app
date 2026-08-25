@@ -464,12 +464,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<HoldingEntity> holdings)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<HoldingEntity> holdings,  String? message)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Loaded() when loaded != null:
-return loaded(_that.holdings);case Error() when error != null:
+return loaded(_that.holdings,_that.message);case Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -488,12 +488,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<HoldingEntity> holdings)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<HoldingEntity> holdings,  String? message)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
 return loading();case Loaded():
-return loaded(_that.holdings);case Error():
+return loaded(_that.holdings,_that.message);case Error():
 return error(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -508,12 +508,12 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<HoldingEntity> holdings)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<HoldingEntity> holdings,  String? message)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Loaded() when loaded != null:
-return loaded(_that.holdings);case Error() when error != null:
+return loaded(_that.holdings,_that.message);case Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -590,7 +590,7 @@ String toString() {
 
 
 class Loaded implements TradingState {
-  const Loaded({required  List<HoldingEntity> holdings}): _holdings = holdings;
+  const Loaded({required  List<HoldingEntity> holdings, this.message}): _holdings = holdings;
   
 
  final  List<HoldingEntity> _holdings;
@@ -600,6 +600,7 @@ class Loaded implements TradingState {
   return EqualUnmodifiableListView(_holdings);
 }
 
+ final  String? message;
 
 /// Create a copy of TradingState
 /// with the given fields replaced by the non-null parameter values.
@@ -611,16 +612,16 @@ $LoadedCopyWith<Loaded> get copyWith => _$LoadedCopyWithImpl<Loaded>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._holdings, _holdings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._holdings, _holdings)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_holdings));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_holdings),message);
 
 @override
 String toString() {
-  return 'TradingState.loaded(holdings: $holdings)';
+  return 'TradingState.loaded(holdings: $holdings, message: $message)';
 }
 
 
@@ -631,7 +632,7 @@ abstract mixin class $LoadedCopyWith<$Res> implements $TradingStateCopyWith<$Res
   factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<HoldingEntity> holdings
+ List<HoldingEntity> holdings, String? message
 });
 
 
@@ -648,10 +649,11 @@ class _$LoadedCopyWithImpl<$Res>
 
 /// Create a copy of TradingState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? holdings = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? holdings = null,Object? message = freezed,}) {
   return _then(Loaded(
 holdings: null == holdings ? _self._holdings : holdings // ignore: cast_nullable_to_non_nullable
-as List<HoldingEntity>,
+as List<HoldingEntity>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
