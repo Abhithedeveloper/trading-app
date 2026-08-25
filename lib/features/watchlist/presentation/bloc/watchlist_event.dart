@@ -2,6 +2,8 @@ part of 'watchlist_bloc.dart';
 
 
 
+
+
 @freezed
 sealed class WatchlistEvent with _$WatchlistEvent {
   const factory WatchlistEvent.started() = _Started;
@@ -29,10 +31,9 @@ sealed class WatchlistEvent with _$WatchlistEvent {
     required String symbol,
   }) = _RemoveStock;
 
-  const factory WatchlistEvent.reorder({
-    required String watchlistId,
-    required int oldIndex,
-    required int newIndex,
-  }) = _Reorder;
+const factory WatchlistEvent.reorder({
+  required String watchlistId,
+  required int oldIndex,
+  required int newIndex,
+}) = _Reorder;
 }
-

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_app/core/di/injection.dart';
 import 'package:trading_app/features/market_data/data/data_source/mock_market_data_source.dart';
 import 'package:trading_app/features/market_data/data/repository/market_data_repository_impl.dart';
 import 'package:trading_app/features/market_data/domain/usecase/get_market_data.dart';
 import 'package:trading_app/features/market_data/presentation/bloc/market_data_bloc.dart';
 import 'package:trading_app/features/market_data/presentation/pages/market_data_page.dart';
+import 'package:trading_app/features/watchlist/presentation/page/watchlist_page.dart';
 
 // void main() {
 //    final dataSource = MockMarketDataDataSource();
@@ -21,7 +23,11 @@ import 'package:trading_app/features/market_data/presentation/pages/market_data_
 //   dataSource.start();
 //   runApp(const MyApp());
 // }
-void main() {
+Future<void> main() async {
+
+   WidgetsFlutterBinding.ensureInitialized();
+
+    await setupDependencies();
   final dataSource = MockMarketDataDataSource();
 
   final repository = MarketDataRepositoryImpl(
@@ -47,14 +53,15 @@ final WatchMarketDataUseCase useCase;
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (_) => MarketDataBloc(
-          watchMarketDataUseCase: useCase,
-        )..add(
-            const MarketDataEvent.started(),
-          ),
-        child: const MarketDataPage(),
-      ),
+      home:const WatchlistPage()
+      //  BlocProvider(
+      //   create: (_) => MarketDataBloc(
+      //     watchMarketDataUseCase: useCase,
+      //   )..add(
+      //       const MarketDataEvent.started(),
+      //     ),
+      //   child: const MarketDataPage(),
+      // ),
     );
     
     // MaterialApp(

@@ -173,4 +173,38 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
 
     await _localDataSource.saveWatchlists(watchlists);
   }
+  @override
+Future<void> reorderWatchlists({
+  required int oldIndex,
+  required int newIndex,
+}) async {
+  final watchlists = await _localDataSource.getWatchlists();
+
+  if (oldIndex < 0 || oldIndex >= watchlists.length) {
+    return;
+  }
+
+  if (newIndex < 0 || newIndex >= watchlists.length) {
+    return;
+  }
+
+  if (oldIndex == newIndex) {
+    return;
+  }
+
+  if (oldIndex < newIndex) {
+    newIndex -= 1;
+  }
+
+  final watchlist = watchlists.removeAt(oldIndex);
+
+  watchlists.insert(
+    newIndex,
+    watchlist,
+  );
+
+  await _localDataSource.saveWatchlists(
+    watchlists,
+  );
+}
 }
