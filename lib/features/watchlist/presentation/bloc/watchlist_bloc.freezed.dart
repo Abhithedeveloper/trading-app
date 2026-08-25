@@ -56,7 +56,7 @@ extension WatchlistEventPatterns on WatchlistEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Create value)?  create,TResult Function( _Rename value)?  rename,TResult Function( _Delete value)?  delete,TResult Function( _AddStock value)?  addStock,TResult Function( _RemoveStock value)?  removeStock,TResult Function( _Reorder value)?  reorder,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Create value)?  create,TResult Function( _Rename value)?  rename,TResult Function( _Delete value)?  delete,TResult Function( _AddStock value)?  addStock,TResult Function( _RemoveStock value)?  removeStock,TResult Function( _Reorder value)?  reorder,TResult Function( _ReorderWatchlists value)?  reorderWatchlists,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
@@ -66,7 +66,8 @@ return rename(_that);case _Delete() when delete != null:
 return delete(_that);case _AddStock() when addStock != null:
 return addStock(_that);case _RemoveStock() when removeStock != null:
 return removeStock(_that);case _Reorder() when reorder != null:
-return reorder(_that);case _:
+return reorder(_that);case _ReorderWatchlists() when reorderWatchlists != null:
+return reorderWatchlists(_that);case _:
   return orElse();
 
 }
@@ -84,7 +85,7 @@ return reorder(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Create value)  create,required TResult Function( _Rename value)  rename,required TResult Function( _Delete value)  delete,required TResult Function( _AddStock value)  addStock,required TResult Function( _RemoveStock value)  removeStock,required TResult Function( _Reorder value)  reorder,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Create value)  create,required TResult Function( _Rename value)  rename,required TResult Function( _Delete value)  delete,required TResult Function( _AddStock value)  addStock,required TResult Function( _RemoveStock value)  removeStock,required TResult Function( _Reorder value)  reorder,required TResult Function( _ReorderWatchlists value)  reorderWatchlists,}){
 final _that = this;
 switch (_that) {
 case _Started():
@@ -94,7 +95,8 @@ return rename(_that);case _Delete():
 return delete(_that);case _AddStock():
 return addStock(_that);case _RemoveStock():
 return removeStock(_that);case _Reorder():
-return reorder(_that);}
+return reorder(_that);case _ReorderWatchlists():
+return reorderWatchlists(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -108,7 +110,7 @@ return reorder(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Create value)?  create,TResult? Function( _Rename value)?  rename,TResult? Function( _Delete value)?  delete,TResult? Function( _AddStock value)?  addStock,TResult? Function( _RemoveStock value)?  removeStock,TResult? Function( _Reorder value)?  reorder,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Create value)?  create,TResult? Function( _Rename value)?  rename,TResult? Function( _Delete value)?  delete,TResult? Function( _AddStock value)?  addStock,TResult? Function( _RemoveStock value)?  removeStock,TResult? Function( _Reorder value)?  reorder,TResult? Function( _ReorderWatchlists value)?  reorderWatchlists,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
@@ -118,7 +120,8 @@ return rename(_that);case _Delete() when delete != null:
 return delete(_that);case _AddStock() when addStock != null:
 return addStock(_that);case _RemoveStock() when removeStock != null:
 return removeStock(_that);case _Reorder() when reorder != null:
-return reorder(_that);case _:
+return reorder(_that);case _ReorderWatchlists() when reorderWatchlists != null:
+return reorderWatchlists(_that);case _:
   return null;
 
 }
@@ -135,7 +138,7 @@ return reorder(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String name)?  create,TResult Function( String id,  String name)?  rename,TResult Function( String id)?  delete,TResult Function( String watchlistId,  String symbol)?  addStock,TResult Function( String watchlistId,  String symbol)?  removeStock,TResult Function( String watchlistId,  int oldIndex,  int newIndex)?  reorder,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String name)?  create,TResult Function( String id,  String name)?  rename,TResult Function( String id)?  delete,TResult Function( String watchlistId,  String symbol)?  addStock,TResult Function( String watchlistId,  String symbol)?  removeStock,TResult Function( String watchlistId,  int oldIndex,  int newIndex)?  reorder,TResult Function( int oldIndex,  int newIndex)?  reorderWatchlists,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _Create() when create != null:
@@ -144,7 +147,8 @@ return rename(_that.id,_that.name);case _Delete() when delete != null:
 return delete(_that.id);case _AddStock() when addStock != null:
 return addStock(_that.watchlistId,_that.symbol);case _RemoveStock() when removeStock != null:
 return removeStock(_that.watchlistId,_that.symbol);case _Reorder() when reorder != null:
-return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _:
+return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _ReorderWatchlists() when reorderWatchlists != null:
+return reorderWatchlists(_that.oldIndex,_that.newIndex);case _:
   return orElse();
 
 }
@@ -162,7 +166,7 @@ return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String name)  create,required TResult Function( String id,  String name)  rename,required TResult Function( String id)  delete,required TResult Function( String watchlistId,  String symbol)  addStock,required TResult Function( String watchlistId,  String symbol)  removeStock,required TResult Function( String watchlistId,  int oldIndex,  int newIndex)  reorder,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String name)  create,required TResult Function( String id,  String name)  rename,required TResult Function( String id)  delete,required TResult Function( String watchlistId,  String symbol)  addStock,required TResult Function( String watchlistId,  String symbol)  removeStock,required TResult Function( String watchlistId,  int oldIndex,  int newIndex)  reorder,required TResult Function( int oldIndex,  int newIndex)  reorderWatchlists,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _Create():
@@ -171,7 +175,8 @@ return rename(_that.id,_that.name);case _Delete():
 return delete(_that.id);case _AddStock():
 return addStock(_that.watchlistId,_that.symbol);case _RemoveStock():
 return removeStock(_that.watchlistId,_that.symbol);case _Reorder():
-return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);}
+return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _ReorderWatchlists():
+return reorderWatchlists(_that.oldIndex,_that.newIndex);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -185,7 +190,7 @@ return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String name)?  create,TResult? Function( String id,  String name)?  rename,TResult? Function( String id)?  delete,TResult? Function( String watchlistId,  String symbol)?  addStock,TResult? Function( String watchlistId,  String symbol)?  removeStock,TResult? Function( String watchlistId,  int oldIndex,  int newIndex)?  reorder,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String name)?  create,TResult? Function( String id,  String name)?  rename,TResult? Function( String id)?  delete,TResult? Function( String watchlistId,  String symbol)?  addStock,TResult? Function( String watchlistId,  String symbol)?  removeStock,TResult? Function( String watchlistId,  int oldIndex,  int newIndex)?  reorder,TResult? Function( int oldIndex,  int newIndex)?  reorderWatchlists,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _Create() when create != null:
@@ -194,7 +199,8 @@ return rename(_that.id,_that.name);case _Delete() when delete != null:
 return delete(_that.id);case _AddStock() when addStock != null:
 return addStock(_that.watchlistId,_that.symbol);case _RemoveStock() when removeStock != null:
 return removeStock(_that.watchlistId,_that.symbol);case _Reorder() when reorder != null:
-return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _:
+return reorder(_that.watchlistId,_that.oldIndex,_that.newIndex);case _ReorderWatchlists() when reorderWatchlists != null:
+return reorderWatchlists(_that.oldIndex,_that.newIndex);case _:
   return null;
 
 }
@@ -632,6 +638,74 @@ class __$ReorderCopyWithImpl<$Res>
   return _then(_Reorder(
 watchlistId: null == watchlistId ? _self.watchlistId : watchlistId // ignore: cast_nullable_to_non_nullable
 as String,oldIndex: null == oldIndex ? _self.oldIndex : oldIndex // ignore: cast_nullable_to_non_nullable
+as int,newIndex: null == newIndex ? _self.newIndex : newIndex // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _ReorderWatchlists implements WatchlistEvent {
+  const _ReorderWatchlists({required this.oldIndex, required this.newIndex});
+  
+
+ final  int oldIndex;
+ final  int newIndex;
+
+/// Create a copy of WatchlistEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ReorderWatchlistsCopyWith<_ReorderWatchlists> get copyWith => __$ReorderWatchlistsCopyWithImpl<_ReorderWatchlists>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ReorderWatchlists&&(identical(other.oldIndex, oldIndex) || other.oldIndex == oldIndex)&&(identical(other.newIndex, newIndex) || other.newIndex == newIndex));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,oldIndex,newIndex);
+
+@override
+String toString() {
+  return 'WatchlistEvent.reorderWatchlists(oldIndex: $oldIndex, newIndex: $newIndex)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ReorderWatchlistsCopyWith<$Res> implements $WatchlistEventCopyWith<$Res> {
+  factory _$ReorderWatchlistsCopyWith(_ReorderWatchlists value, $Res Function(_ReorderWatchlists) _then) = __$ReorderWatchlistsCopyWithImpl;
+@useResult
+$Res call({
+ int oldIndex, int newIndex
+});
+
+
+
+
+}
+/// @nodoc
+class __$ReorderWatchlistsCopyWithImpl<$Res>
+    implements _$ReorderWatchlistsCopyWith<$Res> {
+  __$ReorderWatchlistsCopyWithImpl(this._self, this._then);
+
+  final _ReorderWatchlists _self;
+  final $Res Function(_ReorderWatchlists) _then;
+
+/// Create a copy of WatchlistEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? oldIndex = null,Object? newIndex = null,}) {
+  return _then(_ReorderWatchlists(
+oldIndex: null == oldIndex ? _self.oldIndex : oldIndex // ignore: cast_nullable_to_non_nullable
 as int,newIndex: null == newIndex ? _self.newIndex : newIndex // ignore: cast_nullable_to_non_nullable
 as int,
   ));

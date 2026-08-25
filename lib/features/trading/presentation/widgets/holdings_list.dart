@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_app/core/constants/app_strings.dart';
 
 import '../../domain/entity/holding_entity.dart';
 
@@ -15,7 +16,7 @@ class HoldingsList extends StatelessWidget {
     if (holdings.isEmpty) {
       return const Center(
         child: Text(
-          'No holdings yet',
+          AppStrings.noHoldings,
           style: TextStyle(
             fontSize: 16,
           ),

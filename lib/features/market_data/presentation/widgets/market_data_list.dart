@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_app/core/constants/app_strings.dart';
 
 import '../../domain/entity/market_data_entity.dart';
 import 'market_data_tile.dart';
@@ -15,7 +16,7 @@ class MarketDataList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (marketData.isEmpty) {
       return const Center(
-        child: Text('No market data available'),
+        child: Text(AppStrings.noMarketDataAvailable),
       );
     }
 

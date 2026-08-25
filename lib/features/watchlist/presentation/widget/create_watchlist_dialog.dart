@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_app/core/constants/app_strings.dart';
 
 class CreateWatchlistDialog extends StatefulWidget {
   const CreateWatchlistDialog({
@@ -38,13 +39,13 @@ class _CreateWatchlistDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Create Watchlist'),
+      title:  Text(AppStrings.createWatchlist),
       content: TextField(
         controller: _controller,
         autofocus: true,
         decoration: const InputDecoration(
-          labelText: 'Name',
-          hintText: 'My Watchlist',
+          labelText: AppStrings.name,
+          hintText: AppStrings.myWatchlist,
         ),
         onSubmitted: (_) {
           _create();
@@ -55,11 +56,11 @@ class _CreateWatchlistDialogState
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
+          child:  Text(AppStrings.cancel),
         ),
         ElevatedButton(
           onPressed: _create,
-          child: const Text('Create'),
+          child:  Text(AppStrings.create),
         ),
       ],
     );

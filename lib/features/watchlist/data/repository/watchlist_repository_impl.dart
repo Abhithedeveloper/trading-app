@@ -1,14 +1,12 @@
-import 'package:trading_app/features/watchlist/data/model/dto/watchlist_dto.dart';
-import 'package:trading_app/features/watchlist/domain/entity/watchlist_entity.dart';
-
-
-
+import '../../domain/entity/watchlist_entity.dart';
 import '../../domain/repository/watchlist_repository.dart';
 import '../datasource/watchlist_local_datasource.dart';
+import '../model/dto/watchlist_dto.dart';
 import '../model/watchlist_model.dart';
 
-final class WatchlistRepositoryImpl implements WatchlistRepository {
-  WatchlistRepositoryImpl({
+final class WatchlistRepositoryImpl
+    implements WatchlistRepository {
+  const WatchlistRepositoryImpl({
     required WatchlistLocalDataSource localDataSource,
   }) : _localDataSource = localDataSource;
 
@@ -27,28 +25,38 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
 
   @override
   Future<void> createWatchlist(String name) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
     final watchlist = WatchlistModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: name,
+      id: DateTime.now()
+          .millisecondsSinceEpoch
+          .toString(),
+      name: name.trim(),
       symbols: const [],
     );
 
-    watchlists.add(watchlist.toDto());
+    watchlists.add(
+      watchlist.toDto(),
+    );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
 
   @override
   Future<void> deleteWatchlist(String id) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
     watchlists.removeWhere(
       (watchlist) => watchlist.id == id,
     );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
 
   @override
@@ -56,7 +64,8 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
     required String id,
     required String name,
   }) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
     final index = watchlists.indexWhere(
       (watchlist) => watchlist.id == id,
@@ -66,15 +75,19 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
       return;
     }
 
-    final old = watchlists[index];
+    final existing = watchlists[index];
 
     watchlists[index] = WatchlistDto(
-      id: old.id,
-      name: name,
-      symbols: old.symbols,
+      id: existing.id,
+      name: name.trim(),
+      symbols: List<String>.from(
+        existing.symbols,
+      ),
     );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
 
   @override
@@ -82,32 +95,44 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
     required String watchlistId,
     required String symbol,
   }) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
     final index = watchlists.indexWhere(
       (watchlist) => watchlist.id == watchlistId,
     );
 
     if (index == -1) {
+      throw StateError(
+        'Watchlist not found: $watchlistId',
+      );
+    }
+
+    final existing = watchlists[index];
+
+    final normalizedSymbol =
+        symbol.trim().toUpperCase();
+
+    if (normalizedSymbol.isEmpty) {
       return;
     }
 
-    final watchlist = watchlists[index];
-
-    if (watchlist.symbols.contains(symbol)) {
+    if (existing.symbols.contains(normalizedSymbol)) {
       return;
     }
 
     watchlists[index] = WatchlistDto(
-      id: watchlist.id,
-      name: watchlist.name,
+      id: existing.id,
+      name: existing.name,
       symbols: [
-        ...watchlist.symbols,
-        symbol,
+        ...existing.symbols,
+        normalizedSymbol,
       ],
     );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
 
   @override
@@ -115,27 +140,34 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
     required String watchlistId,
     required String symbol,
   }) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
     final index = watchlists.indexWhere(
       (watchlist) => watchlist.id == watchlistId,
     );
 
     if (index == -1) {
-      return;
+      throw StateError(
+        'Watchlist not found: $watchlistId',
+      );
     }
 
-    final watchlist = watchlists[index];
+    final existing = watchlists[index];
 
     watchlists[index] = WatchlistDto(
-      id: watchlist.id,
-      name: watchlist.name,
-      symbols: watchlist.symbols
-          .where((item) => item != symbol)
+      id: existing.id,
+      name: existing.name,
+      symbols: existing.symbols
+          .where(
+            (item) => item != symbol,
+          )
           .toList(),
     );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
 
   @override
@@ -144,67 +176,115 @@ final class WatchlistRepositoryImpl implements WatchlistRepository {
     required int oldIndex,
     required int newIndex,
   }) async {
-    final watchlists = await _localDataSource.getWatchlists();
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
-    final index = watchlists.indexWhere(
+    final watchlistIndex = watchlists.indexWhere(
       (watchlist) => watchlist.id == watchlistId,
     );
 
-    if (index == -1) {
+    if (watchlistIndex == -1) {
+      throw StateError(
+        'Watchlist not found: $watchlistId',
+      );
+    }
+
+    final existing = watchlists[watchlistIndex];
+
+    final symbols = [
+      ...existing.symbols,
+    ];
+
+    if (symbols.length < 2) {
       return;
     }
 
-    final watchlist = watchlists[index];
+    if (oldIndex < 0 ||
+        oldIndex >= symbols.length) {
+      return;
+    }
 
-    final symbols = [...watchlist.symbols];
+    if (newIndex < 0 ||
+        newIndex > symbols.length) {
+      return;
+    }
+
+    if (oldIndex == newIndex ||
+        oldIndex + 1 == newIndex) {
+      return;
+    }
 
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
 
     final symbol = symbols.removeAt(oldIndex);
-    symbols.insert(newIndex, symbol);
 
-    watchlists[index] = WatchlistDto(
-      id: watchlist.id,
-      name: watchlist.name,
+    if (newIndex > symbols.length) {
+      newIndex = symbols.length;
+    }
+
+    symbols.insert(
+      newIndex,
+      symbol,
+    );
+
+    watchlists[watchlistIndex] = WatchlistDto(
+      id: existing.id,
+      name: existing.name,
       symbols: symbols,
     );
 
-    await _localDataSource.saveWatchlists(watchlists);
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
+
   @override
-Future<void> reorderWatchlists({
-  required int oldIndex,
-  required int newIndex,
-}) async {
-  final watchlists = await _localDataSource.getWatchlists();
+  Future<void> reorderWatchlists({
+    required int oldIndex,
+    required int newIndex,
+  }) async {
+    final watchlists =
+        await _localDataSource.getWatchlists();
 
-  if (oldIndex < 0 || oldIndex >= watchlists.length) {
-    return;
+    if (watchlists.length < 2) {
+      return;
+    }
+
+    if (oldIndex < 0 ||
+        oldIndex >= watchlists.length) {
+      return;
+    }
+
+    if (newIndex < 0 ||
+        newIndex > watchlists.length) {
+      return;
+    }
+
+    if (oldIndex == newIndex ||
+        oldIndex + 1 == newIndex) {
+      return;
+    }
+
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    final watchlist =
+        watchlists.removeAt(oldIndex);
+
+    if (newIndex > watchlists.length) {
+      newIndex = watchlists.length;
+    }
+
+    watchlists.insert(
+      newIndex,
+      watchlist,
+    );
+
+    await _localDataSource.saveWatchlists(
+      watchlists,
+    );
   }
-
-  if (newIndex < 0 || newIndex >= watchlists.length) {
-    return;
-  }
-
-  if (oldIndex == newIndex) {
-    return;
-  }
-
-  if (oldIndex < newIndex) {
-    newIndex -= 1;
-  }
-
-  final watchlist = watchlists.removeAt(oldIndex);
-
-  watchlists.insert(
-    newIndex,
-    watchlist,
-  );
-
-  await _localDataSource.saveWatchlists(
-    watchlists,
-  );
-}
 }

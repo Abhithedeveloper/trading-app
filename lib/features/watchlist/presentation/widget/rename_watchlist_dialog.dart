@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_app/core/constants/app_strings.dart';
 
 class RenameWatchlistDialog extends StatefulWidget {
   const RenameWatchlistDialog({
@@ -49,12 +50,12 @@ class _RenameWatchlistDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Rename Watchlist'),
+      title:  Text(AppStrings.renameWatchlist),
       content: TextField(
         controller: _controller,
         autofocus: true,
         decoration: const InputDecoration(
-          labelText: 'Name',
+          labelText: AppStrings.name,
         ),
         onSubmitted: (_) {
           _rename();
@@ -65,11 +66,11 @@ class _RenameWatchlistDialogState
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
+          child: const Text(AppStrings.cancel),
         ),
         ElevatedButton(
           onPressed: _rename,
-          child: const Text('Rename'),
+          child:  Text(AppStrings.rename),
         ),
       ],
     );
