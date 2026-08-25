@@ -5,11 +5,11 @@ import '../entity/watchlist_entity.dart';
 import '../repository/watchlist_repository.dart';
 
 final class GetWatchlists {
-  GetWatchlists(this._repository);
+  GetWatchlists(this.repository);
 
-  final WatchlistRepository _repository;
+  final WatchlistRepository repository;
 
   Future<List<WatchlistEntity>> call() {
-    return _repository.getWatchlists();
+    return repository.getWatchlists();
   }
 }

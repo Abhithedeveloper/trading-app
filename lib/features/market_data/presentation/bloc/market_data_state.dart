@@ -6,11 +6,11 @@ sealed class MarketDataState with _$MarketDataState {
 
   const factory MarketDataState.loading() = Loading;
 
-  const factory MarketDataState.loaded(
-    Map<String, MarketDataEntity> marketData,
-  ) = Loaded;
+  const factory MarketDataState.loaded({
+    required Map<String, MarketDataEntity> marketData,
+  }) = Loaded;
 
-  const factory MarketDataState.error(
-    String message,
-  ) = Error;
+  const factory MarketDataState.error({
+    required String message,
+  }) = Error;
 }
