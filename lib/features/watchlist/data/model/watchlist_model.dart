@@ -1,5 +1,7 @@
-import 'package:trading_app/features/watchlist/domain/entity/watchlist.dart';
 
+
+
+import 'package:trading_app/features/watchlist/domain/entity/watchlist_entity.dart';
 
 import 'dto/watchlist_dto.dart';
 

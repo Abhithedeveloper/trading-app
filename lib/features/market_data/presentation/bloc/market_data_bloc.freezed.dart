@@ -518,7 +518,7 @@ String toString() {
 
 
 class Loaded implements MarketDataState {
-  const Loaded(final  Map<String, MarketDataEntity> marketData): _marketData = marketData;
+  const Loaded(  Map<String, MarketDataEntity> marketData): _marketData = marketData;
   
 
  final  Map<String, MarketDataEntity> _marketData;
