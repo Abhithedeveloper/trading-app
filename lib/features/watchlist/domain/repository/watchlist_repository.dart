@@ -30,4 +30,8 @@ abstract interface class WatchlistRepository {
     required int oldIndex,
     required int newIndex,
   });
+  Future<void> reorderWatchlists({
+  required int oldIndex,
+  required int newIndex,
+});
 }

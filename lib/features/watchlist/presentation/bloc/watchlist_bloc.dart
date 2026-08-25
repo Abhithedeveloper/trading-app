@@ -93,10 +93,11 @@ final class WatchlistBloc
     Emitter<WatchlistState> emit,
   ) async {
     try {
-     await _renameWatchlist(
-  id: event.id,
-  name: event.name,
-);
+      await _renameWatchlist(
+        id: event.id,
+        name: event.name,
+      );
+
       await _reloadWatchlists(emit);
     } catch (error) {
       emit(
@@ -129,9 +130,10 @@ final class WatchlistBloc
   ) async {
     try {
       await _addStockToWatchlist(
-  watchlistId: event.watchlistId,
-  symbol: event.symbol,
-);
+        watchlistId: event.watchlistId,
+        symbol: event.symbol,
+      );
+
       await _reloadWatchlists(emit);
     } catch (error) {
       emit(
@@ -148,9 +150,10 @@ final class WatchlistBloc
   ) async {
     try {
       await _removeStockFromWatchlist(
-  watchlistId: event.watchlistId,
-  symbol: event.symbol,
-);
+        watchlistId: event.watchlistId,
+        symbol: event.symbol,
+      );
+
       await _reloadWatchlists(emit);
     } catch (error) {
       emit(
@@ -161,25 +164,26 @@ final class WatchlistBloc
     }
   }
 
-  Future<void> _onReorder(
-    _Reorder event,
-    Emitter<WatchlistState> emit,
-  ) async {
-    try {
- await _reorderWatchlist(
-  watchlistId: event.watchlistId,
-  oldIndex: event.oldIndex,
-  newIndex: event.newIndex,
-);
-      await _reloadWatchlists(emit);
-    } catch (error) {
-      emit(
-        WatchlistState.error(
-          message: error.toString(),
-        ),
-      );
-    }
+Future<void> _onReorder(
+  _Reorder event,
+  Emitter<WatchlistState> emit,
+) async {
+  try {
+    await _reorderWatchlist(
+      watchlistId: event.watchlistId,
+      oldIndex: event.oldIndex,
+      newIndex: event.newIndex,
+    );
+
+    await _reloadWatchlists(emit);
+  } catch (error) {
+    emit(
+      WatchlistState.error(
+        message: error.toString(),
+      ),
+    );
   }
+}
 
   Future<void> _reloadWatchlists(
     Emitter<WatchlistState> emit,
