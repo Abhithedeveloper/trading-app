@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_app/core/di/injection.dart';
+import 'package:trading_app/features/home/presentation/pages/home_page.dart';
 import 'package:trading_app/features/market_data/data/data_source/mock_market_data_source.dart';
 import 'package:trading_app/features/market_data/data/repository/market_data_repository_impl.dart';
 import 'package:trading_app/features/market_data/domain/usecase/get_market_data.dart';
@@ -53,7 +54,7 @@ final WatchMarketDataUseCase useCase;
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:const WatchlistPage()
+      home:const HomePage()
       //  BlocProvider(
       //   create: (_) => MarketDataBloc(
       //     watchMarketDataUseCase: useCase,

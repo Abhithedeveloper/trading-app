@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trading_app/features/market_data/data/data_source/mock_market_data_source.dart';
+import 'package:trading_app/features/market_data/data/repository/market_data_repository_impl.dart';
+import 'package:trading_app/features/market_data/domain/repository/market_data_repository.dart';
+import 'package:trading_app/features/market_data/domain/usecase/get_market_data.dart';
+import 'package:trading_app/features/market_data/presentation/bloc/market_data_bloc.dart';
 
 import '../../features/watchlist/data/datasource/watchlist_local_datasource.dart';
 import '../../features/watchlist/data/repository/watchlist_repository_impl.dart';
@@ -31,7 +36,36 @@ getIt.registerLazySingleton<LocalStorage>(
     getIt<SharedPreferences>(),
   ),
 );
+  // =========================
+  // Market Data
+  // =========================
 
+  // Market Data DataSource
+  getIt.registerLazySingleton<MarketDataDataSource>(
+    () => MockMarketDataDataSource(),
+  );
+
+  // Market Data Repository
+  getIt.registerLazySingleton<MarketDataRepository>(
+    () => MarketDataRepositoryImpl(
+      dataSource: getIt<MarketDataDataSource>(),
+    ),
+  );
+
+  // Market Data UseCase
+  getIt.registerLazySingleton<WatchMarketDataUseCase>(
+    () => WatchMarketDataUseCase(
+      repository: getIt<MarketDataRepository>(),
+    ),
+  );
+
+  // Market Data BLoC
+ getIt.registerFactory<MarketDataBloc>(
+  () => MarketDataBloc(
+    watchMarketDataUseCase:
+        getIt<WatchMarketDataUseCase>(),
+  ),
+);
   // Watchlist Local DataSource
   getIt.registerLazySingleton<WatchlistLocalDataSource>(
     () => WatchlistLocalDataSourceImpl(
