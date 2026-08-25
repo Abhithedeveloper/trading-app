@@ -47,17 +47,19 @@ final class MarketDataBloc
     Emitter<MarketDataState> emit,
   ) {
     final currentData = switch (state) {
-      Loaded(:final marketData) => marketData,
-      _ => <String, MarketDataEntity>{},
-    };
+  Loaded(:final marketData) => marketData,
+  _ => <String, MarketDataEntity>{},
+};
 
     final updatedData = Map<String, MarketDataEntity>.from(currentData);
 
     updatedData[event.data.symbol] = event.data;
 
-    emit(
-      MarketDataState.loaded(updatedData),
-    );
+   emit(
+  MarketDataState.loaded(
+    marketData: updatedData,
+  ),
+);
   }
 
   @override

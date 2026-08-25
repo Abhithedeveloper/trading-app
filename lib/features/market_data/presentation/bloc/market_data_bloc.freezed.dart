@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'market_data_bloc.dart';
@@ -9,6 +9,7 @@ part of 'market_data_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -518,7 +519,7 @@ String toString() {
 
 
 class Loaded implements MarketDataState {
-  const Loaded(  Map<String, MarketDataEntity> marketData): _marketData = marketData;
+  const Loaded({required  Map<String, MarketDataEntity> marketData}): _marketData = marketData;
   
 
  final  Map<String, MarketDataEntity> _marketData;
@@ -578,7 +579,7 @@ class _$LoadedCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? marketData = null,}) {
   return _then(Loaded(
-null == marketData ? _self._marketData : marketData // ignore: cast_nullable_to_non_nullable
+marketData: null == marketData ? _self._marketData : marketData // ignore: cast_nullable_to_non_nullable
 as Map<String, MarketDataEntity>,
   ));
 }
@@ -590,7 +591,7 @@ as Map<String, MarketDataEntity>,
 
 
 class Error implements MarketDataState {
-  const Error(this.message);
+  const Error({required this.message});
   
 
  final  String message;
@@ -644,7 +645,7 @@ class _$ErrorCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(Error(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
